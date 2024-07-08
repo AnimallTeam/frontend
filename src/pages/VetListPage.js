@@ -15,25 +15,9 @@ const VetListPage = () => {
       </Grid>
       <Grid item xs={12} md={4}>
         <div
-          style={{
-            borderLeft: '1px solid lightgray',
-            paddingLeft: '2rem',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center', 
-          }}
-        >
+          style={{borderLeft: '1px solid lightgray',paddingLeft: '2rem',height: '100%',display: 'flex',flexDirection: 'column',justifyContent: 'center'}}>
           <div
-          style={{
-          
-            paddingLeft: '2rem',           
-            height: '100%',              
-            display: 'flex',              
-            flexDirection: 'column',      
-                
-          }}
-        >
+          style={{paddingLeft: '2rem',height: '100%',display: 'flex',flexDirection: 'column'}}>
           <Typography variant="h6" gutterBottom sx={{lineHeight:'23px'}}>
             Find veterinaries and NGOs who are here to help the stray animals
           </Typography>

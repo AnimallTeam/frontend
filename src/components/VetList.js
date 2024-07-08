@@ -5,7 +5,7 @@ import React from 'react';
 
 const vetData = [
     {
-        name: 'Dr. Anshu_the_great',
+        name: 'Dr. Dev',
         phone: '8821723191',
         hospital: 'Dr. Dev Pet Hositial',
         address: 'Nasirabad Rd, opposite Reliance Fresh, Nagbai, Adarsh Nagar, Ajmer, Rajasthan 305001',
