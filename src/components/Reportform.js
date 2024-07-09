@@ -1,5 +1,5 @@
-import { ArrowBackIosNewRounded, LocationCityOutlined, UploadFile } from '@mui/icons-material';
-import { Button, Checkbox, Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Typography } from '@mui/material';
+import { ArrowBackIosNewRounded, ClearOutlined, LocationCityOutlined, UploadFile } from '@mui/icons-material';
+import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, Grid, IconButton, List, ListItem, ListItemButton, ListItemText, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
 const vetData = [
@@ -36,6 +36,11 @@ const vetData = [
 const Reportform = () => {
   const [selectedDoctors, setSelectedDoctors] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [emergencyType, setemergencyType]=useState('')
+  const [openModal, setOpenModal]=useState(false)
+  const [showUserInfoModal, setShowUserInfoModal] = useState(false); 
+  const [firstName, setFirstName] = useState(''); 
+  const [mobileNumber, setMobileNumber] = useState(''); 
 
   const handleDoctorToggle = (vet) => {
     const currentIndex = selectedDoctors.indexOf(vet);
@@ -62,8 +67,27 @@ const Reportform = () => {
 
   const handleContinue = () => {
     console.log('Selected Doctors:', selectedDoctors);
-    toggleDrawer(false); // Close the drawer 
+    toggleDrawer(false); 
+    setShowUserInfoModal(true); 
   };
+
+  const handleEmergencyTypeChange=(type) =>{
+    setemergencyType(type);
+    
+  }
+  const handleContinueEmergency = () => {
+    setOpenModal(false)
+  }
+ 
+
+  const handleSaveInfo = () => {
+    // Save the user information (replace this with your logic)
+    console.log('First Name:', firstName); 
+    console.log('Mobile Number:', mobileNumber);
+
+    setShowUserInfoModal(false); 
+  };
+
 
   const list = () => (
     <div role="presentation" onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)} sx={{ width: '100rem', backgroundColor: 'white' }} >
@@ -135,9 +159,9 @@ const Reportform = () => {
          <Typography variant="subtitle1" >
          Emergency type
           </Typography>
-          <div>
+          <div  onClick={() => setOpenModal(true)} style={{ cursor: 'pointer' }}>
           <Typography variant="subtitle1" gutterBottom sx={{ ml:'10px'}}>
-            Select ▾ 
+            {emergencyType || 'Select'} ▾ 
           </Typography>
           <hr style={{width:'50px', borderColor: 'black', marginTop: '-0.7rem' }} />
           </div>
@@ -210,13 +234,13 @@ const Reportform = () => {
           <Typography >
           Request a video call
           </Typography>
-            <Checkbox /> {/* Checkbox without label, aligned to the right */}
+            <Checkbox /> 
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between',marginTop:'-5px'}}>
           <Typography >
           Make a donation
           </Typography>
-            <Checkbox /> {/* Checkbox without label, aligned to the right */}
+            <Checkbox />
           </div>
 
           {/* Submit Button */}
@@ -230,6 +254,59 @@ const Reportform = () => {
       <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
         {list()}
       </Drawer>
+
+
+      {/*Emergency Model*/}
+
+      <Dialog  open={openModal} onClose={() => setOpenModal(false)}>
+        <DialogTitle  sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography variant="h6">Emergency type</Typography>
+        <IconButton onClick={() => setOpenModal(false)}>
+          <ClearOutlined/>
+        </IconButton>
+        </DialogTitle>
+        <DialogContent>
+        <Grid container spacing={1}>
+            {/* Emergency Type Buttons (Dynamic Styling) */}
+            {['Accident', 'Rabies', 'Distemper', 'Swallowing poison', 'Non-urgent', 'Others'].map(type => (
+              <Grid item xs={6} key={type}>
+                <Button 
+                 
+                  fullWidth 
+                  onClick={() => handleEmergencyTypeChange(type)}
+                  sx={{backgroundColor: emergencyType === type ? '#DCEDC8' : 'white',border:'1px inset black',}}>
+                  {type}
+                </Button>
+              </Grid>
+            ))}
+            </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleContinueEmergency} size="large"
+  sx={{ width: '100%', border:'1px inset black',maxWidth: '450px',color: 'black', backgroundColor: 'white',position: 'relative', display: 'block',margin: '0 auto',boxShadow: '5px 5px 0px #DCEDC8',}}>
+            Continue
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={showUserInfoModal} onClose={() => setShowUserInfoModal(false)} PaperProps={{sx: { borderRadius: '20px',  maxWidth: 400}}}>
+        <DialogTitle sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '10px 16px'}}>
+          <IconButton onClick={() => setShowUserInfoModal(false)} sx={{ backgroundColor: 'white', '&:hover': { backgroundColor: 'lightgray' }}}>
+            <ClearOutlined />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ padding: '20px' }}> 
+          <Typography variant="body1" gutterBottom>
+            Sharing your name and number will help the Vets/NGOs who try to connect with you
+          </Typography>
+          <TextField label="First name" fullWidth value={firstName} onChange={(e) => setFirstName(e.target.value)} variant="outlined" margin="dense" sx={{ marginBottom: '16px'}}/>
+          <TextField label="Mobile number" fullWidth value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} variant="outlined" margin="dense"/>
+        </DialogContent>
+        <DialogActions sx={{ padding: '16px 24px' }}> {/* Added padding to DialogActions */}
+          <Button onClick={handleSaveInfo} sx={{width:'100%',color:'black',boxShadow: '5px 5px 0px #DCEDC8',border:'1px inset black'}}>
+            Save information
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 
